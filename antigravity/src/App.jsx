@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import ItemDetailPage from "./pages/ItemDetailPage";
 import LoginPage from "./pages/LoginPage";
 import PostItemPage from "./pages/PostItemPage";
+import MyPostsPage from "./pages/MyPostsPage";
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -27,6 +28,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <PostItemPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-posts"
+          element={
+            <ProtectedRoute>
+              <MyPostsPage />
             </ProtectedRoute>
           }
         />
