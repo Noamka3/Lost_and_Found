@@ -45,8 +45,8 @@ export default function Navbar() {
                         <Link to="/my-posts" style={{ padding: '8px 14px', borderRadius: '8px', textDecoration: 'none', color: '#64748b', fontSize: '14px', fontWeight: 500 }}>
                             📋 My Posts
                         </Link>
-                        <Link to="/post" style={{ padding: '9px 20px', borderRadius: '50px', textDecoration: 'none', background: '#2563eb', color: 'white', fontSize: '14px', fontWeight: 600 }}>
-                            + Post Item
+                        <Link to="/post" style={{ padding: '10px 20px', borderRadius: '50px', textDecoration: 'none', background: '#2563eb', color: 'white', fontSize: '14px', fontWeight: 600 }}>
+                         + Post Item
                         </Link>
                         <button onClick={handleLogout} style={{ padding: '8px 14px', borderRadius: '8px', border: 'none', background: 'transparent', color: '#64748b', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}>
                             👤 Logout
