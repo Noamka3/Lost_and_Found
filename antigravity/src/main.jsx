@@ -1,16 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App.jsx";
-import "./index.css";
-import { AuthProvider } from "./context/AuthContext.jsx";
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import { MantineProvider } from '@mantine/core'
+import { Notifications } from '@mantine/notifications'
+import '@mantine/core/styles.css'
+import '@mantine/notifications/styles.css'
+import { AuthProvider } from './context/AuthContext'
+import App from './App.jsx'
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <MantineProvider>
+        <Notifications />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </MantineProvider>
     </BrowserRouter>
-  </React.StrictMode>
-);
+  </StrictMode>
+)
