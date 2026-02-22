@@ -27,7 +27,7 @@ export default function LoginPage() {
             const { error } = await supabase.auth.signUp({
                 email, password,
                 options: { data: { full_name: name },
-                emailRedirectTo: 'https://your-public-site.com/'
+                emailRedirectTo: 'https://noamka3.github.io/Lost_and_Found/'
              }
             })
             if (error) {
