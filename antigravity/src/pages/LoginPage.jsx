@@ -26,7 +26,9 @@ export default function LoginPage() {
         } else {
             const { error } = await supabase.auth.signUp({
                 email, password,
-                options: { data: { full_name: name } }
+                options: { data: { full_name: name },
+                emailRedirectTo: 'https://your-public-site.com/'
+             }
             })
             if (error) {
                 notifications.show({ message: error.message, color: 'red' })
