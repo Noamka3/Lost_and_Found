@@ -41,7 +41,6 @@ export default function ItemDetailPage() {
 
   useEffect(() => {
     loadItem();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   async function loadItem() {
@@ -56,7 +55,7 @@ export default function ItemDetailPage() {
     if (error) {
       notifications.show({ message: "Item not found", color: "red" });
       navigate("/");
-      return; // חשוב: לא להמשיך
+      return; 
     }
 
     setItem(data);
