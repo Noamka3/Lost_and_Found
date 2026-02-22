@@ -121,19 +121,36 @@ export default function ItemDetailPage() {
           }}
         >
           {/* Image */}
-          <div
-            style={{
-              background: "#f8faff",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "100px",
-              minHeight: "300px",
-              borderRight: "1px solid #e2e8f0",
-            }}
-          >
-            {icon}
-          </div>
+<div
+  style={{
+    background: "#f8faff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "300px",
+    borderRight: "1px solid #e2e8f0",
+    overflow: "hidden",
+    position: "relative",
+  }}
+>
+  {item.item_img_url ? (
+    <img
+      src={item.item_img_url}
+      alt={item.title}
+      onError={() => console.log("Detail image failed:", item.item_img_url)}
+style={{
+  width: "100%",
+  height: "100%",
+  objectFit: "contain", // מציג הכל, לא חותך
+  display: "block",
+}}
+    />
+  ) : (
+    <div style={{ fontSize: "100px" }}>
+      {icon}
+    </div>
+  )}
+</div>
 
           {/* Info */}
           <div style={{ padding: "36px" }}>

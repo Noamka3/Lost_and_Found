@@ -10,15 +10,23 @@ export default function MyPostsPage() {
     const [items, setItems] = useState([])
     const [loading, setLoading] = useState(true)
 
-    const emojis = {
-        '💼 Wallet / Purse': '👛', '🔑 Keys': '🔑', '📱 Electronics': '📱',
-        '🎒 Bags / Backpacks': '🎒', '👓 Glasses': '👓', '📚 Textbooks / Notes': '📚',
-        '🆔 ID / Student Card': '🪪', '💧 Water Bottle': '💧', '🧥 Clothing': '🧥'
-    }
+const emojis = {
+  '💼 Wallet': '👛',
+  '🔑 Keys': '🔑',
+  '📱 Electronics': '📱',
+  '🎒 Bags / Backpacks': '🎒',
+  '👓 Glasses': '👓',
+  '📚 Textbooks / Notes': '📚',
+  '🆔 ID / Student Card': '🪪',
+  '💧 Water Bottle': '💧',
+  '🧥 Clothing': '🧥',
+  '🎧 Accessories': '🎧',
+}
 
-    useEffect(() => {
-        fetchMyItems()
-    }, [])
+useEffect(() => {
+  if (!user) return
+  fetchMyItems()
+}, [user])
 
     async function fetchMyItems() {
         const { data, error } = await supabase
@@ -42,7 +50,7 @@ export default function MyPostsPage() {
             notifications.show({ message: error.message, color: 'red' })
         } else {
             notifications.show({ message: 'Item deleted ✅', color: 'green' })
-            setItems(items.filter(i => i.id !== id))
+           setItems(items.filter(i => i.id !== id))
         }
     }
 
@@ -81,17 +89,51 @@ export default function MyPostsPage() {
                                 onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
                                 onClick={() => navigate(`/item/${item.id}`)}
                             >
-                                <div style={{ height: '160px', background: '#f8faff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '52px', position: 'relative' }}>
-                                    {emojis[item.category] || '📦'}
-                                    <span style={{
-                                        position: 'absolute', top: '10px', right: '10px',
-                                        padding: '3px 10px', borderRadius: '50px', fontSize: '11px', fontWeight: 700,
-                                        background: item.status === 'lost' ? '#fee2e2' : '#d1fae5',
-                                        color: item.status === 'lost' ? '#ef4444' : '#10b981'
-                                    }}>
-                                        {item.status.toUpperCase()}
-                                    </span>
-                                </div>
+<div
+  style={{
+    height: '160px',
+    background: '#f8faff',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    overflow: 'hidden',
+  }}
+>
+{item.item_img_url ? (
+  <img
+    src={item.item_img_url}
+    alt={item.title}
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      display: 'block',
+    }}
+  />
+) : (
+  <div style={{ fontSize: '52px' }}>
+    {emojis[item.category] || '📦'}
+  </div>
+)}
+
+  <span
+    style={{
+      position: 'absolute',
+      top: '10px',
+      right: '10px',
+      padding: '3px 10px',
+      borderRadius: '50px',
+      fontSize: '11px',
+      fontWeight: 700,
+      background: item.status === 'lost' ? '#fee2e2' : '#d1fae5',
+      color: item.status === 'lost' ? '#ef4444' : '#10b981',
+    }}
+  >
+    {item.status.toUpperCase()}
+  </span>
+</div>
+
                                 <div style={{ padding: '14px 16px' }}>
                                     <div style={{ fontWeight: 700, marginBottom: '4px' }}>{item.title}</div>
                                     <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '12px' }}>📍 {item.location}</div>

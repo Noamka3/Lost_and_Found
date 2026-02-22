@@ -3,7 +3,23 @@ import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { notifications } from '@mantine/notifications'
-import { Anchor, Box, Breadcrumbs, Button, Container, Group,Paper,Select, Stack,Text,TextInput,Textarea,Title,} from '@mantine/core'
+
+import {
+  Anchor,
+  Box,
+  Breadcrumbs,
+  Button,
+  Container,
+  Group,
+  Paper,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  Textarea,
+  Title,
+  FileInput,
+} from '@mantine/core'
 
 const CATEGORIES = [
   '💼 Wallet',
@@ -34,6 +50,7 @@ export default function PostItemPage() {
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState(INITIAL_FORM)
   const [errors, setErrors] = useState({})
+  const [imageFile,setImageFile] = useState(null);
 
   function setField(field, value) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -51,9 +68,49 @@ export default function PostItemPage() {
     if (!form.location.trim()) e.location = 'Location is required'
     if (!form.contact_method.trim()) e.contact_method = 'Contact method is required'
 
+
+    // ולידציה לתמונה
+  if (!imageFile) {
+    e.image = 'Image is required'
+  } else {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+    const maxSize = 5 * 1024 * 1024 
+
+    if (!allowedTypes.includes(imageFile.type)) {
+      e.image = 'Only JPG / PNG / WEBP are allowed'
+    } else if (imageFile.size > maxSize) {
+      e.image = 'Image must be up to 5MB'
+    }
+  }
+
+
     setErrors(e)
     return Object.keys(e).length === 0
   }
+
+  async function uploadItemImage(file, userId) {
+  const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+  const fileName = `${userId}/${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2)}.${ext}`
+
+  const { error: uploadError } = await supabase.storage
+   
+  .from('item-images')
+    .upload(fileName, file, {
+      cacheControl: '3600',
+      upsert: false,
+    })
+
+  if (uploadError) {
+    throw uploadError
+  }
+
+  const { data } = supabase.storage.from('item-images').getPublicUrl(fileName)
+  return data.publicUrl
+}
+
+
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -71,6 +128,19 @@ export default function PostItemPage() {
 
     setLoading(true)
 
+    let imageUrl = null
+
+try {
+  imageUrl = await uploadItemImage(imageFile, user.id)
+} catch (uploadErr) {
+  notifications.show({
+    message: uploadErr.message || 'Failed to upload image',
+    color: 'red',
+  })
+  setLoading(false)
+  return
+}
+
     const payload = {
       title: form.title.trim(),
       category: form.category,
@@ -78,6 +148,7 @@ export default function PostItemPage() {
       description: form.description.trim(),
       contact_method: form.contact_method.trim(),
       status: form.status,
+      item_img_url: imageUrl,
       user_id: user.id,
       user_name: user.user_metadata?.full_name || user.email,
     }
@@ -99,6 +170,7 @@ export default function PostItemPage() {
     })
 
     setForm(INITIAL_FORM)
+    setImageFile(null)
     setLoading(false)
     navigate('/')
   }
@@ -151,6 +223,29 @@ export default function PostItemPage() {
                 searchable
                 nothingFoundMessage="No category found"
               />
+
+              <FileInput
+  label="Item Image"
+  placeholder="Upload item image (JPG / PNG / WEBP)"
+  accept="image/png,image/jpeg,image/webp"
+  value={imageFile}
+  onChange={(file) => {
+    setImageFile(file)
+    if (errors.image) {
+      setErrors((prev) => ({ ...prev, image: undefined }))
+    }
+  }}
+  error={errors.image}
+  required
+  radius="md"
+  clearable
+/>
+{imageFile && (
+  <Text size="xs" c="dimmed">
+    Selected: {imageFile.name} ({Math.round(imageFile.size / 1024)} KB)
+  </Text>
+)}
+
 
               <TextInput
                 label="Location"

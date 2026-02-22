@@ -99,17 +99,54 @@ export default function HomePage() {
                                 onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
                                 onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
                             >
-                                <div style={{ height: '160px', background: '#f8faff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '52px', position: 'relative' }}>
-                                    {emojis[item.category] || '📦'}
-                                    <span style={{
-                                        position: 'absolute', top: '10px', right: '10px',
-                                        padding: '3px 10px', borderRadius: '50px', fontSize: '11px', fontWeight: 700,
-                                        background: item.status === 'lost' ? '#fee2e2' : '#d1fae5',
-                                        color: item.status === 'lost' ? '#ef4444' : '#10b981'
-                                    }}>
-                                        {item.status.toUpperCase()}
-                                    </span>
-                                </div>
+<div
+  style={{
+    height: '160px',
+    background: '#f8faff',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    overflow: 'hidden',
+  }}
+>
+  {item.item_img_url ? (
+    <img
+      src={item.item_img_url}
+      alt={item.title}
+      onError={() => console.log('Home image failed:', item.item_img_url)}
+      style={{
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover', // לכרטיסים קטנים זה הכי יפה
+        display: 'block',
+      }}
+    />
+  ) : (
+    <div style={{ fontSize: '52px' }}>
+      {emojis[item.category] || '📦'}
+    </div>
+  )}
+
+  <span
+    style={{
+      position: 'absolute',
+      top: '10px',
+      right: '10px',
+      padding: '3px 10px',
+      borderRadius: '50px',
+      fontSize: '11px',
+      fontWeight: 700,
+      background: item.status === 'lost' ? '#fee2e2' : '#d1fae5',
+      color: item.status === 'lost' ? '#ef4444' : '#10b981',
+      zIndex: 2, // כדי שהתג יהיה מעל התמונה
+    }}
+  >
+    {item.status.toUpperCase()}
+  </span>
+</div>
+
+
                                 <div style={{ padding: '14px 16px' }}>
                                     <div style={{ fontWeight: 700, marginBottom: '4px' }}>{item.title}</div>
                                     <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '4px' }}>📍 {item.location}</div>
