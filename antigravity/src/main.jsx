@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 
@@ -15,11 +15,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <MantineProvider>
       <Notifications />
-      <BrowserRouter basename="/Lost_and_Found">
+      <HashRouter>
         <AuthProvider>
           <App />
         </AuthProvider>
-      </BrowserRouter>
+      </HashRouter>
     </MantineProvider>
   </React.StrictMode>
 );
