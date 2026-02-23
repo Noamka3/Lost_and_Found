@@ -59,7 +59,7 @@ export default function HomePage() {
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                         placeholder="Search by keyword or location..."
-                        style={{ flex: 1, border: 'none', outline: 'none', padding: '13px 20px', fontSize: '14px', background: 'transparent' }}
+                        style={{ flex: 1, border: 'none',color: 'black', outline: 'none', padding: '13px 20px', fontSize: '14px', background: 'transparent' }}
                     />
                     <button style={{ padding: '13px 20px', background: '#2563eb', border: 'none', cursor: 'pointer', fontSize: '16px' }}>🔍</button>
                 </div>
